@@ -1,0 +1,21 @@
+{
+  "name": "create-cssharp-plugin",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --import=tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uFloppyDisk/create-cssharp-plugin.git"
+  },
+  "keywords": ["counterstrikesharp", "cs2", "cssharp", "plugin", "dotnet"],
+  "author": "Pawel Bartusiak <pawel@floppyd.sk>",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/uFloppyDisk/create-cssharp-plugin/issues"
+  },
+  "homepage": "https://github.com/uFloppyDisk/create-cssharp-plugin#readme",
+  "description": ""
+}
