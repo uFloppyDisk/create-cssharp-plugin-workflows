@@ -1,6 +1,7 @@
+import { execSync } from "child_process";
+import fs from "fs";
 import path from "path";
 import process from "process";
-import fs from "fs";
 
 import prompts from "prompts";
 import parameters from "#src/parameters";
@@ -14,6 +15,7 @@ const TEMPLATE_BASE = path.join(process.cwd(), 'templates');
 
 prompts(parameters)
   .then(answers => {
+    console.time("Done in");
     const pluginName = answers.pluginName;
 
     const targetPath = (() => {
@@ -38,6 +40,22 @@ prompts(parameters)
     }
 
     generatePluginFiles(templatePath, targetPath, transforms);
+
+    const dotnetCommands = [
+      'dotnet new solution',
+      'dotnet sln add src',
+      'dotnet build',
+    ]
+
+    if (answers.setupUsingDotnetCli) {
+      for (const command of dotnetCommands) {
+        console.time(command);
+        execSync(command, { cwd: targetPath });
+        console.timeEnd(command);
+      }
+    }
+
+    console.timeEnd("Done in");
   })
   .catch(err => console.error(err.message));
 

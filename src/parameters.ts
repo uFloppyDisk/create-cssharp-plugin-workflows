@@ -45,5 +45,18 @@ export default <PromptObject[]>[
     message: 'Initial version',
     initial: '0.0.1',
   },
+  {
+    type: 'toggle',
+    name: 'setupUsingDotnetCli',
+    message: 'Setup plugin using dotnet?',
+    initial: true,
+    active: 'yes',
+    inactive: 'no',
+    onRender(kleur) {
+      if (this.firstRender) {
+        this.msg = `Setup plugin using dotnet? ${kleur.gray('(You must have the dotnet CLI installed and accessible via `dotnet`)')}`
+      }
+    }
+  },
 ];
 
