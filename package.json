@@ -17,5 +17,13 @@
     "url": "https://github.com/uFloppyDisk/create-cssharp-plugin/issues"
   },
   "homepage": "https://github.com/uFloppyDisk/create-cssharp-plugin#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.4.9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
 }
