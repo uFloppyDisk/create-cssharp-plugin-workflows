@@ -4,21 +4,13 @@
   "main": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --import=tsx src/index.ts",
-    "build": "tsc --outDir dist"
+    "dev": "node --import=tsx src/index.ts"
   },
-  "bin": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uFloppyDisk/create-cssharp-plugin.git"
   },
-  "keywords": [
-    "counterstrikesharp",
-    "cs2",
-    "cssharp",
-    "plugin",
-    "dotnet"
-  ],
+  "keywords": ["counterstrikesharp", "cs2", "cssharp", "plugin", "dotnet"],
   "author": "Pawel Bartusiak <pawel@floppyd.sk>",
   "license": "GPLv3",
   "bugs": {
@@ -26,11 +18,7 @@
   },
   "homepage": "https://github.com/uFloppyDisk/create-cssharp-plugin#readme",
   "description": "",
-  "_moduleAliases": {
-    "#src": "dist/"
-  },
   "dependencies": {
-    "module-alias": "^2.2.3",
     "prompts": "^2.4.2"
   },
   "devDependencies": {

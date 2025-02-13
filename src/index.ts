@@ -1,7 +1,3 @@
-#!/usr/bin/env node
-
-import "module-alias/register";
-
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
