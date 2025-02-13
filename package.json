@@ -4,8 +4,14 @@
   "main": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --import=tsx src/index.ts"
+    "dev": "tsup --watch",
+    "build": "tsup --env.NODE_ENV production"
   },
+  "type": "module",
+  "files": [
+    "templates"
+  ],
+  "bin": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uFloppyDisk/create-cssharp-plugin.git"
@@ -19,7 +25,8 @@
   "homepage": "https://github.com/uFloppyDisk/create-cssharp-plugin#readme",
   "description": "",
   "dependencies": {
-    "prompts": "^2.4.2"
+    "prompts": "^2.4.2",
+    "tsup": "^8.3.6"
   },
   "devDependencies": {
     "@types/prompts": "^2.4.9",

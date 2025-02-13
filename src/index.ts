@@ -1,17 +1,21 @@
+#!/usr/bin/env node
+
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import process from "process";
 
 import prompts from "prompts";
 import parameters from "#src/parameters";
 import generatePluginFiles from "#src/generatePluginFiles";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const ROOT = path.join(path.dirname(__filename), "../");
 const TARGET_BASE = process.env.NODE_ENV === 'production'
   ? process.cwd()
-  : path.join(process.cwd(), '.playground');
+  : path.join(ROOT, '.playground');
 
-const TEMPLATE_BASE = path.join(process.cwd(), 'templates');
+const TEMPLATE_BASE = path.join(ROOT, 'templates');
 
 prompts(parameters)
   .then(answers => {
