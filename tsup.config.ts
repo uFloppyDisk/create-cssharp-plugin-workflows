@@ -7,6 +7,6 @@ export default defineConfig({
   entry: ["src/index.ts"],
   minify: !isDev,
   format: ["esm"],
-  target: "esnext",
+  target: "es2022",
   outDir: "dist",
 });
