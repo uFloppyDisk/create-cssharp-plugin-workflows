@@ -7,15 +7,7 @@ import path from "path";
 import prompts from "prompts";
 import parameters from "#src/parameters";
 import generatePluginFiles from "#src/generatePluginFiles";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const ROOT = path.join(path.dirname(__filename), "../");
-const TARGET_BASE = process.env.NODE_ENV === 'production'
-  ? process.cwd()
-  : path.join(ROOT, '.playground');
-
-const TEMPLATE_BASE = path.join(ROOT, 'templates');
+import { TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
 
 function onCancel() {
   console.log("Cancelled making a CounterStrike Sharp plugin.");
@@ -25,14 +17,14 @@ function onCancel() {
 prompts(parameters, { onCancel })
   .then(answers => {
     console.time("Done in");
-    const pluginName = answers.pluginName;
+    const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
 
-    const targetPath = (() => {
+    const pluginName = (() => {
       if (!answers.containingDirectorySameName) {
-        return path.join(TARGET_BASE, answers.containingDirectoryName);
+        return answers.pluginName;
       }
 
-      return path.join(TARGET_BASE, pluginName);
+      return answers.containingDirectoryName;
     })();
 
     if (fs.existsSync(targetPath)) {

@@ -1,31 +1,60 @@
+import { existsSync } from "fs";
+import path from "path";
 import { PromptObject } from "prompts";
+import { TARGET_BASE } from "./constants";
 
-function validateString(errorMsg: string) {
-  return (str: unknown): true | string => {
-    return typeof str === 'string' && str.trim().length > 0 ? true : errorMsg;
+type Validation<T extends string = string, P = PromptObject<T>["validate"]> =
+  (answer: Parameters<P>[0]) => ReturnType<P>;
+
+function validationBuilder(validations: Validation[]): Validation {
+  return (answer: string) => {
+    for (const validate of validations) {
+      const result = validate(answer);
+      if (result === true) continue;
+
+      return result;
+    }
+
+    return true;
+  }
+}
+
+function validateString(errorMsg: string): Validation {
+  return (answer) => {
+    return typeof answer === 'string' && answer.trim().length > 0 ? true : errorMsg;
+  }
+}
+
+function validatePathDoesNotExist(errorMsg: string, base: string = TARGET_BASE): Validation {
+  return (answer) => {
+    return !existsSync(path.join(base, answer)) ? true : errorMsg;
   }
 }
 
 export default <PromptObject[]>[
   {
     type: 'text',
-    name: 'pluginName',
-    message: 'What do you want to name your plugin?',
-    validate: validateString('Your plugin must have a name!'),
+    name: 'containingDirectoryName',
+    message: 'What do you want to name the project directory?',
+    validate: validationBuilder([
+      validateString('Your project directory must have a name!'),
+      validatePathDoesNotExist(`A directory with that name already exists!`),
+    ]),
   },
   {
     type: 'toggle',
     name: 'containingDirectorySameName',
-    message: 'Do you want the containing directory to have the same name as your plugin?',
+    message: 'Do you want your plugin to have the same name as your project directory?',
     initial: true,
     active: 'yes',
     inactive: 'no',
   },
   {
     type: (_, values) => values.containingDirectorySameName === false ? 'text' : null,
-    name: 'containingDirectoryName',
-    message: 'What do you want to name the containing directory?',
-    validate: validateString('Containing directory must have a name!'),
+    name: 'pluginName',
+    message: 'What do you want to name your plugin?',
+    initial: (_, values) => values.containingDirectoryName,
+    validate: validateString('Your plugin must have a name!'),
   },
   {
     type: 'text',
