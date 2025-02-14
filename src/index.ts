@@ -8,11 +8,14 @@ import prompts from "prompts";
 import parameters from "#src/parameters";
 import generatePluginFiles from "#src/generatePluginFiles";
 import { TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
+import { error, renderGoodbye, renderMasthead, warn } from "#src/vanity";
 
 function onCancel() {
-  console.log("Cancelled making a CounterStrike Sharp plugin.");
+  warn("Cancelled making a CounterStrike Sharp plugin.");
   return false;
 }
+
+renderMasthead();
 
 prompts(parameters, { onCancel })
   .then(answers => {
@@ -28,7 +31,7 @@ prompts(parameters, { onCancel })
     })();
 
     if (fs.existsSync(targetPath)) {
-      console.error("Path", targetPath, "already exists!");
+      error(`Path ${targetPath} already exists!`);
       return;
     }
 
@@ -58,8 +61,10 @@ prompts(parameters, { onCancel })
 
     console.timeEnd("Done in");
   })
-  .catch(err => console.error(err.message))
+  .catch(err => {
+    error(err.message)
+  })
   .finally(() => {
-    console.log("Goodbye!");
+    renderGoodbye();
   });
 

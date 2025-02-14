@@ -16,7 +16,13 @@
     "type": "git",
     "url": "git+https://github.com/uFloppyDisk/create-cssharp-plugin.git"
   },
-  "keywords": ["counterstrikesharp", "cs2", "cssharp", "plugin", "dotnet"],
+  "keywords": [
+    "counterstrikesharp",
+    "cs2",
+    "cssharp",
+    "plugin",
+    "dotnet"
+  ],
   "author": "Pawel Bartusiak <pawel@floppyd.sk>",
   "license": "GPLv3",
   "bugs": {
@@ -25,6 +31,8 @@
   "homepage": "https://github.com/uFloppyDisk/create-cssharp-plugin#readme",
   "description": "",
   "dependencies": {
+    "chalk": "^5.4.1",
+    "gradient-string": "^3.0.0",
     "prompts": "^2.4.2",
     "tsup": "^8.3.6"
   },
