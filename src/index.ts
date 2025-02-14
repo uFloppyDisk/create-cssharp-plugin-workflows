@@ -10,62 +10,65 @@ import generatePluginFiles from "#src/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
 import { error, renderGoodbye, renderMasthead, warn } from "#src/vanity";
 
-function onCancel() {
-  warn("Cancelled making a CounterStrike Sharp plugin.");
-  return false;
-}
-
 renderMasthead();
 
-prompts(parameters, { onCancel })
-  .then(answers => {
-    console.time("Done in");
-    const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
+const generateProject = new Promise(async (resolve, reject) => {
+  let cancelled = false;
+  function onCancel() {
+    warn("Cancelled making a CounterStrike Sharp plugin.");
+    cancelled = true;
+    return false;
+  }
 
-    const pluginName = (() => {
-      if (!answers.pluginSameName) {
-        return answers.pluginName;
-      }
+  const answers = await prompts(parameters, { onCancel });
+  if (cancelled) return resolve(true);
 
-      return answers.containingDirectoryName;
-    })();
+  console.time("Done in");
+  const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
 
-    if (fs.existsSync(targetPath)) {
-      error(`Path ${targetPath} already exists!`);
-      return;
+  const pluginName = (() => {
+    if (!answers.pluginSameName) {
+      return answers.pluginName;
     }
 
-    const templatePath = path.join(TEMPLATE_BASE, 'standard-plugin');
-    const transforms = {
-      "PLUGIN_NAME": pluginName,
-      "PLUGIN_AUTHOR": answers.pluginAuthor,
-      "PLUGIN_DESCRIPTION": answers.pluginDescription,
-      "PLUGIN_VERSION": answers.pluginVersion,
+    return answers.containingDirectoryName;
+  })();
+
+  if (fs.existsSync(targetPath)) {
+    return reject(`Path ${targetPath} already exists!`);
+  }
+
+  const templatePath = path.join(TEMPLATE_BASE, 'standard-plugin');
+  const transforms = {
+    "PLUGIN_NAME": pluginName,
+    "PLUGIN_AUTHOR": answers.pluginAuthor,
+    "PLUGIN_DESCRIPTION": answers.pluginDescription,
+    "PLUGIN_VERSION": answers.pluginVersion,
+  }
+
+  generatePluginFiles(templatePath, targetPath, transforms);
+
+  const dotnetCommands = [
+    'dotnet new solution',
+    'dotnet sln add src',
+    'dotnet build',
+  ]
+
+  if (answers.setupUsingDotnetCli) {
+    for (const command of dotnetCommands) {
+      console.time(command);
+      execSync(command, { cwd: targetPath });
+      console.timeEnd(command);
     }
+  }
 
-    generatePluginFiles(templatePath, targetPath, transforms);
+  console.timeEnd("Done in");
+  return resolve(true);
+});
 
-    const dotnetCommands = [
-      'dotnet new solution',
-      'dotnet sln add src',
-      'dotnet build',
-    ]
-
-    if (answers.setupUsingDotnetCli) {
-      for (const command of dotnetCommands) {
-        console.time(command);
-        execSync(command, { cwd: targetPath });
-        console.timeEnd(command);
-      }
-    }
-
-    console.timeEnd("Done in");
-  })
+generateProject
   .catch(err => {
     error(err.message)
     if (!IS_PRODUCTION) console.error(err);
   })
-  .finally(() => {
-    renderGoodbye();
-  });
-
+  .finally(() => renderGoodbye());
