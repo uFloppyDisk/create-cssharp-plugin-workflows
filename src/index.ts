@@ -66,5 +66,8 @@ prompts(parameters, { onCancel })
 
     console.timeEnd("Done in");
   })
-  .catch(err => console.error(err.message));
+  .catch(err => console.error(err.message))
+  .finally(() => {
+    console.log("Goodbye!");
+  });
 
