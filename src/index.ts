@@ -7,7 +7,7 @@ import path from "path";
 import prompts from "prompts";
 import parameters from "#src/parameters";
 import generatePluginFiles from "#src/generatePluginFiles";
-import { TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
+import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
 import { error, renderGoodbye, renderMasthead, warn } from "#src/vanity";
 
 function onCancel() {
@@ -63,6 +63,7 @@ prompts(parameters, { onCancel })
   })
   .catch(err => {
     error(err.message)
+    if (!IS_PRODUCTION) console.error(err);
   })
   .finally(() => {
     renderGoodbye();
