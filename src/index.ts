@@ -17,7 +17,12 @@ const TARGET_BASE = process.env.NODE_ENV === 'production'
 
 const TEMPLATE_BASE = path.join(ROOT, 'templates');
 
-prompts(parameters)
+function onCancel() {
+  console.log("Cancelled making a CounterStrike Sharp plugin.");
+  return false;
+}
+
+prompts(parameters, { onCancel })
   .then(answers => {
     console.time("Done in");
     const pluginName = answers.pluginName;
