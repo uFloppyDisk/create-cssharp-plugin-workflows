@@ -43,14 +43,14 @@ export default <PromptObject[]>[
   },
   {
     type: 'toggle',
-    name: 'containingDirectorySameName',
+    name: 'pluginSameName',
     message: 'Do you want your plugin to have the same name as your project directory?',
     initial: true,
     active: 'yes',
     inactive: 'no',
   },
   {
-    type: (_, values) => values.containingDirectorySameName === false ? 'text' : null,
+    type: (_, values) => values.pluginSameName === false ? 'text' : null,
     name: 'pluginName',
     message: 'What do you want to name your plugin?',
     initial: (_, values) => values.containingDirectoryName,

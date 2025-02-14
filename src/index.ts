@@ -20,7 +20,7 @@ prompts(parameters, { onCancel })
     const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
 
     const pluginName = (() => {
-      if (!answers.containingDirectorySameName) {
+      if (!answers.pluginSameName) {
         return answers.pluginName;
       }
 
