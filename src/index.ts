@@ -11,7 +11,7 @@ import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
 import { error, renderGoodbye, renderMasthead, warn } from "#src/vanity";
 
 renderMasthead();
-console.log("asdasdfasdfasdfsdf");
+console.log("jgiojgiejroi");
 
 const generateProject = new Promise(async (resolve, reject) => {
   let cancelled = false;
